@@ -1,0 +1,16 @@
+extend layout
+
+block content
+  p
+    | Box status information
+
+  div(ng-controller="StatusCtrl")
+    ul
+      li(ng-repeat="box in boxen")
+        span
+          | id = {{box.id}}
+
+block code
+  script(src="/socket.io/socket.io.js")
+  script(src="/js/services.js")
+  script(src="/js/status.js")

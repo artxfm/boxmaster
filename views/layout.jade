@@ -1,0 +1,46 @@
+!!!5
+html(lang='en',ng-app="boxmaster")
+  head
+    meta(charset='utf-8')
+    title #{title}
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    meta(name="description", content="")
+    meta(name="author", content="")
+
+    link(rel='stylesheet', href='/stylesheets/bootstrap.css', media='screen')
+
+    style
+      body {
+        padding-top: 60px;
+      }
+
+    link(href="/stylesheets/bootstrap-responsive.css", rel="stylesheet")
+
+  body
+    div.navbar.navbar-inverse.navbar-fixed-top
+      div.navbar-inner
+        div.container
+          button.btn.btn-navbar(type="button", data-toggle="collapse", data-target=".nav-collapse")
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+
+          a.brand(href="#") ARTxFM Box Tracker
+          div.nav-collapse.collapse
+            ul.nav
+              li.active
+                a(href="#") Home
+              li
+                a(href="#about") About
+              li
+                a(href="#contact") Contact
+
+    div.container
+      block content
+
+    script(src='http://code.jquery.com/jquery.js')
+    script(src='/js/bootstrap.min.js')
+    script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js')
+    script(src="/js/app.js")
+
+    block code
