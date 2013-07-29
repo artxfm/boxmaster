@@ -1,0 +1,21 @@
+td.centered {
+  text-align: center;
+}
+
+th.centered {
+  text-align: center;
+}
+
+i.offstate {
+  color: #d3d3d3;
+}
+
+i.disabled {
+  color: #d3d3d3;
+}
+
+.table th small {
+  display: block;
+  font-weight: normal;
+  color: #999;
+}
