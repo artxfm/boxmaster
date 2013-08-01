@@ -10,14 +10,26 @@ exports.fake_data = function() {
     { id:'123ABC',
       led:'off',
       uptime:'0d 0h 10m 13s',
-      mute:'no' },
+      mute:'no',
+      desired : {
+        led:'off',
+        mute:'no'
+      }},
     { id:'456ABC',
       led:'on',
       uptime:'0d 0h 10m 13s',
-      mute:'no' },
+      mute:'yes',
+      desired : {
+        led:'off',
+        mute:'no'
+      }},
     { id:'789ABC',
       led:'on',
       uptime:'0d 0h 10m 13s',
-      mute:'no' }];
+      mute:'no',
+      desired : {
+        led:'off',
+        mute:'no'
+      }}];
     return data;
 }

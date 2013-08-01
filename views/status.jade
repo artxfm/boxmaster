@@ -1,14 +1,76 @@
 extend layout
 
 block content
-  p
-    | Box status information
+  div.row
+    div.col-lg-12
+      p Box status information
+      p
+        i.icon-flag.icon-2x
+  div.row
+    div.col-lg-12
+      div.btn-group
+        button(type="button", class="btn btn-default") Master LED Control
+        button(type="button", class="btn btn-default dropdown-toggle", data-toggle="dropdown")
+          span.caret
+        ul.dropdown-menu
+          li
+            a(href="#") All ON
+          li
+            a(href="#") All OFF
 
-  div(ng-controller="StatusCtrl")
-    ul
-      li(ng-repeat="box in boxen")
-        span
-          | id = {{box.id}}
+  div.row(ng-controller="StatusCtrl")
+    div.col-lg-8
+      div.bs-table-scrollable
+        table.table.table-condensed.table-striped.table-hover
+          thead
+            tr
+              th Box ID
+              th Uptime
+              th.centered LED
+                small actual/desired
+              th.centered Audio
+                small actual/desired
+          tbody
+            tr(ng-repeat="box in boxen", class="{{rowClass(box)}}", ng-click="edit(box)")
+              td {{box.id}}
+              td {{box.uptime}}
+              td.centered
+                i.icon-lightbulb(class="{{ledStateClass(box)}}") &nbsp; / &nbsp;
+                i.icon-lightbulb(class="{{ledStateDesiredClass(box)}}")
+              td.centered
+                i(class="{{muteStateSymbol(box)}}") &nbsp; / &nbsp;
+                i(class="{{muteStateDesiredSymbol(box)}}")
+    div.col-lg-4(class="{{formEditClass()}}")
+      div.well.well
+        div.panel
+          div.panel-heading
+            h3.panel-title {{selectedTitle()}}
+          form
+            table.table.table-condensed
+              thead
+                th
+                th current
+                th desired
+              tbody
+                tr
+                  td LED
+                  td
+                    i.icon-lightbulb(class="{{ledStateClass(getSelection())}}")
+                    | &nbsp; {{getSelection().led}}
+                  td
+                    select#ledstateInput.form-control(name="ledstate")
+                      option(value="on") ON
+                      option(value="off") OFF
+                tr
+                  td Audio
+                  td
+                    i(class="{{muteStateSymbol(getSelection())}}")
+                    | &nbsp; {{getAudioState(getSelection())}}
+                  td
+                    select#audiostateInput.form-control(name="audiostate")
+                      option(value="enable") ENABLED
+                      option(value="disable") DISABLED
+            button.btn.btn-default(type="submit") Set State
 
 block code
   script(src="/socket.io/socket.io.js")
