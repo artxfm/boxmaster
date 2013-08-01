@@ -50,4 +50,9 @@ io.sockets.on('connection', function (socket) {
         console.log("XXX get_status");
         socket.emit('status', userui.fake_data());
     });
+
+    socket.on('led_ctrl', function(data) {
+      // Requires auth!
+      console.log("XXX led_ctrl: " + data.state);
+    });
 });

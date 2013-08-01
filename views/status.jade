@@ -6,7 +6,7 @@ block content
       p Box status information
       p
         i.icon-flag.icon-2x
-  div.row
+  div.row(ng-controller="MasterLedCtrl")
     div.col-lg-12
       div.btn-group
         button(type="button", class="btn btn-default") Master LED Control
@@ -14,9 +14,22 @@ block content
           span.caret
         ul.dropdown-menu
           li
-            a(href="#") All ON
+            a(href="#", ng-click="setAllOn()") All ON
           li
-            a(href="#") All OFF
+            a(href="#", ng-click="setAllOff()") All OFF
+
+    div.bm-modal(bm-modal-active="{{dialogIsActive}}")
+      div.modal.fade#confirmDlg(role="dialog", data-show="false", style="display:none")
+        div.modal-dialog
+          div.modal-content
+            div.modal-header
+              button.close(type="button", data-dismiss="modal", aria-hidden="true") &times;
+              h4.modal-title Set All LEDs {{desiredState}}
+            div.modal-body
+              p Are you certain you want to turn {{desiredState}} all LEDs?
+            div.modal-footer
+              button.btn.btn-default(type="button", data-dismiss="modal") No, abort!
+              button.btn.btn-primary(type="button", ng-click="commit()") Yes, make it so!
 
   div.row(ng-controller="StatusCtrl")
     div.col-lg-8
@@ -71,6 +84,8 @@ block content
                       option(value="enable") ENABLED
                       option(value="disable") DISABLED
             button.btn.btn-default(type="submit") Set State
+
+
 
 block code
   script(src="/socket.io/socket.io.js")

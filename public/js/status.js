@@ -17,31 +17,30 @@ function StatusCtrl($scope, socket) {
   };
 
   $scope.rowClass = function(box) {
-    return (box.mute == "yes") ? "error" : "";
+    return (box && (box.mute == "yes")) ? "error" : "";
   };
 
   $scope.muteStateSymbol = function(box) {
-    return (box.mute == "yes") ? "icon-volume-off" : "icon-volume-up";
+    return (box && (box.mute == "yes")) ? "icon-volume-off" : "icon-volume-up";
   };
 
   $scope.muteStateDesiredSymbol = function(box) {
-    return (box.desired.mute == "yes") ? "icon-volume-off" : "icon-volume-up";
+    return (box && (box.desired.mute == "yes")) ? "icon-volume-off" : "icon-volume-up";
   };
 
   $scope.getAudioState = function(box) {
-    return (box.mute == "yes") ? "disabled" : "enabled";
+    return (box && (box.mute == "yes")) ? "disabled" : "enabled";
   };
 
   $scope.ledStateClass = function(box) {
-    return (box.led == "on" ) ? "" : "offstate";
+    return (box && (box.led == "on" )) ? "" : "offstate";
   };
 
   $scope.ledStateDesiredClass = function(box) {
-    return (box.desired.led == "on" ) ? "" : "offstate";
+    return (box && (box.desired.led == "on")) ? "" : "offstate";
   };
 
   $scope.edit = function(box) {
-    console.log("XXX", box);
     $scope.selected = box;
   };
 
@@ -59,6 +58,33 @@ function StatusCtrl($scope, socket) {
 
   $scope.getSelection = function() {
     return $scope.selected;
+  };
+
+}
+
+
+function MasterLedCtrl($scope, socket) {
+
+  $scope.desiredState = null;
+
+  // This is required for bm-modal
+  $scope.dialogIsActive = false;
+
+  $scope.setAllOn = function() {
+    $scope.desiredState = "ON";
+    $scope.dialogIsActive = true;
+  };
+
+  $scope.setAllOff = function() {
+    $scope.desiredState = "OFF";
+    $scope.dialogIsActive = true;
+  };
+
+  $scope.commit = function() {
+    console.log("server turn all LEDs " + $scope.desiredState);
+    socket.emit('led_ctrl', { state: $scope.desiredState });
+    $scope.desiredState = null;
+    $scope.dialogIsActive = false;
   };
 
 }
