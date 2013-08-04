@@ -14,7 +14,7 @@ app.use(express.logger('dev'));  /* 'default', 'short', 'tiny', 'dev' */
 app.use(express.bodyParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/box/hello', boxapi.hello);
+app.post('/box/hello', boxapi.hello);
 app.get('/status', userui.status);
 
 
