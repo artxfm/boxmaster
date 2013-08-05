@@ -2,7 +2,8 @@ var express = require("express"),
     path = require('path'),
     http = require('http'),
     boxapi = require('./src/boxapi'),
-    userui = require('./src/userui');
+    userui = require('./src/userui'),
+    mongo = require('./src/mongo');
 
 var app = express();
 
@@ -38,6 +39,14 @@ var server = http.createServer(app).listen(app.get('port'), function () {
 // var io = require('socket.io').listen(app.listen(port));
 
 
+mongo.init(function(err) {
+    if (err) {
+        throw err;
+    }
+    console.log("mongo connected");
+});
+
+
 var io = require('socket.io').listen(server);
 
 
@@ -48,7 +57,14 @@ io.sockets.on('connection', function (socket) {
     socket.on('get_status', function(data) {
         // XXX fake data
         console.log("XXX get_status");
-        socket.emit('status', userui.fake_data());
+        // socket.emit('status', userui.fake_data());
+        userui.getBoxen(mongo, function(boxlist) {
+            if (!boxlist) {
+                boxlist = [];
+            }
+            console.log("found " + boxlist.length + " boxen");
+            socket.emit('status', boxlist);
+        });
     });
 
     socket.on('led_ctrl', function(data) {

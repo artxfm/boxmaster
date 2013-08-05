@@ -5,6 +5,44 @@ exports.status = function(req, res) {
                 'server_url':'http://localhost:5000'});
 };
 
+
+// callback is called with array of box data.
+//
+exports.getBoxen = function(mongo, callback) {
+    mongo.boxen.find().toArray(function(err, docs) {
+        if (err) {
+            console.log("mongo find error: ", err);
+        } else {
+            // Note that the database ID values are sensitve since they
+            // are used by the boxes to send in updates, so we never
+            // send those to the UI.
+            //
+            var data = [];
+            var dlen = docs.length;
+            for(var i=0; i < dlen; i++) {
+                var doc = docs[i];
+                var rec = {
+                    id: doc.uid,
+                    desired: doc.desired,
+                };
+                if (doc.lastcontact) {
+                    rec.lastcontact = doc.lastcontact;
+                    rec.led = doc.actual.led,
+                    rec.mute = doc.actual.mute,
+                    rec.uptime = doc.lastmsg.uptime;
+                } else {
+                    rec.lastcontact = "NEVER";
+                    rec.uptime = "-";
+                }
+                data.push(rec);
+            }
+            callback(data);
+        }
+    });
+};
+
+
+
 exports.fake_data = function() {
   var data = [
     { id:'123ABC',

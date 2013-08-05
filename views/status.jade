@@ -38,6 +38,7 @@ block content
           thead
             tr
               th Box ID
+              th Last Contact
               th Uptime
               th.centered LED
                 small actual/desired
@@ -46,6 +47,7 @@ block content
           tbody
             tr(ng-repeat="box in boxen", class="{{rowClass(box)}}", ng-click="edit(box)")
               td {{box.id}}
+              td {{box.lastcontact}}
               td {{box.uptime}}
               td.centered
                 i.icon-lightbulb(class="{{ledStateClass(box)}}") &nbsp; / &nbsp;
