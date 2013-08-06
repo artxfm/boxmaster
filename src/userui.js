@@ -42,6 +42,17 @@ exports.getBoxen = function(mongo, callback) {
 };
 
 
+// Callback is called with any error, or null.
+exports.setMasterLed = function(mongo, newstate, callback) {
+    mongo.control.update( { param:'master' }, { $set:{ 'state.led':newstate } }, {w:1},
+                          function(err, result) {
+                              callback(err);
+                          });
+}
+
+
+
+
 
 exports.fake_data = function() {
   var data = [

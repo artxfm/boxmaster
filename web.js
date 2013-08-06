@@ -68,7 +68,15 @@ io.sockets.on('connection', function (socket) {
     });
 
     socket.on('led_ctrl', function(data) {
-      // Requires auth!
-      console.log("XXX led_ctrl: " + data.state);
+        // Requires auth!
+        // TODO: for now mute is always "no"
+        console.log("XXX led_ctrl: " + data.state);
+        var state = (data.state == "ON") ? "on" : "off";
+        userui.setMasterLed(mongo, state, function(err) {
+            if (err) {
+                // TODO: emit error sig to ui...
+                console.log("setMaster ERROR ", err);
+            }
+        });
     });
 });

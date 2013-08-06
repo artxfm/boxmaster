@@ -1,6 +1,7 @@
 // Exports:
 //   db = the db ref
 //   boxen = the boxen collection
+//   control = the control collection
 //
 
 var mongoUri = process.env.MONGOLAB_URI ||
@@ -22,6 +23,18 @@ exports.init = function(callback) {
             db.collection('boxen', function(err, collection) {
                 if (!err) {
                     exports.boxen = collection;
+                }
+            });
+            db.collection('control', function(err, collection) {
+                if (!err) {
+                    exports.control = collection;
+                    collection.findOne({param:'master'}, function(err, item) {
+                        if (!item) {
+                            console.log("initializing master control");
+                            var doc =  { param:'master', state:{ led:'off', mute:'no' } };
+                            collection.insert(doc, {w:1}, function(err, result) {} );
+                        }
+                    });
                 }
             });
         }

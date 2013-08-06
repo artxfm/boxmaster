@@ -15,9 +15,23 @@ exports.hello = function(req, res) {
                                                                 actual:{ led:payload.led, mute:payload.mute }}},
                                        {w:1},
                                        function(err, result) {});
-                    // return desired state back to box.
-                    var state = foundBox.desired;
-                    res.send(JSON.stringify(state));
+                    // return desired state back to box.  Generally we return master
+                    // unless this box is marked as off master
+                    var state = null;
+                    if (foundBox.offMaster) {
+                        state = foundBox.desired;
+                    }
+                    if (!state) {
+                        // grab master...
+                        mongo.control.findOne({param:'master'}, function(err, item) {
+                            if (!err) {
+                                state = item.state;
+                                res.send(JSON.stringify(state));
+                            }
+                        });
+                    } else {
+                        res.send(JSON.stringify(state));
+                    }
                 } else {
                     res.status(404).send('box not found');
                 }
