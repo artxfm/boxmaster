@@ -11,10 +11,46 @@ function StatusCtrl($scope, socket) {
     $scope.boxen = data;
   });
 
-  $scope.addBoxen = function() {
-    $scope.todos.push({text:$scope.todoText, done:false});
-    $scope.todoText = '';
+  $scope.uptime = function(box) {
+    if (box.status && box.status.playElapsed) {
+      return "" + box.status.playElapsed + "s";
+    } else {
+      return "-";
+    }
   };
+
+  $scope.machineUptime = function(box) {
+    if (box.status) {
+      return box.status.uptime;
+    } else {
+      return "-";
+    }
+  };
+
+  $scope.linkQuality = function(box) {
+    if (box.status) {
+      return box.status.linkQuality;
+    } else {
+      return "X";
+    }
+  };
+
+  $scope.signalLevel = function(box) {
+    if (box.status) {
+      return box.status.signalLevel;
+    } else {
+      return "X";
+    }
+  };
+
+  $scope.noiseLevel = function(box) {
+    if (box.status) {
+      return box.status.noiseLevel;
+    } else {
+      return "X";
+    }
+  };
+
 
   $scope.rowClass = function(box) {
     return (box && (box.mute == "yes")) ? "error" : "";
@@ -22,10 +58,6 @@ function StatusCtrl($scope, socket) {
 
   $scope.muteStateSymbol = function(box) {
     return (box && (box.mute == "yes")) ? "icon-volume-off" : "icon-volume-up";
-  };
-
-  $scope.muteStateDesiredSymbol = function(box) {
-    return (box && (box.desired.mute == "yes")) ? "icon-volume-off" : "icon-volume-up";
   };
 
   $scope.getAudioState = function(box) {

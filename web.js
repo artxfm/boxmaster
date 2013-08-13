@@ -76,6 +76,14 @@ io.sockets.on('connection', function (socket) {
             if (err) {
                 // TODO: emit error sig to ui...
                 console.log("setMaster ERROR ", err);
+            } else {
+                // refresh the screen data:
+                userui.getBoxen(mongo, function(boxlist) {
+                    if (!boxlist) {
+                        boxlist = [];
+                    }
+                    socket.emit('status', boxlist);
+                });
             }
         });
     });

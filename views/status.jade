@@ -43,18 +43,16 @@ block content
               th.centered LED
                 small actual/desired
               th.centered Audio
-                small actual/desired
           tbody
             tr(ng-repeat="box in boxen", class="{{rowClass(box)}}", ng-click="edit(box)")
               td {{box.id}}
               td {{box.lastcontact}}
-              td {{box.uptime}}
+              td {{uptime(box)}}
               td.centered
                 i.icon-lightbulb(class="{{ledStateClass(box)}}") &nbsp; / &nbsp;
                 i.icon-lightbulb(class="{{ledStateDesiredClass(box)}}")
               td.centered
-                i(class="{{muteStateSymbol(box)}}") &nbsp; / &nbsp;
-                i(class="{{muteStateDesiredSymbol(box)}}")
+                i(class="{{muteStateSymbol(box)}}")
     div.col-lg-4(class="{{formEditClass()}}")
       div.well.well
         div.panel
@@ -64,28 +62,40 @@ block content
             table.table.table-condensed
               thead
                 th
-                th current
-                th desired
+                th
               tbody
                 tr
                   td LED
                   td
                     i.icon-lightbulb(class="{{ledStateClass(getSelection())}}")
                     | &nbsp; {{getSelection().led}}
-                  td
-                    select#ledstateInput.form-control(name="ledstate")
-                      option(value="on") ON
-                      option(value="off") OFF
+                  //- td
+                    //- select#ledstateInput.form-control(name="ledstate")
+                    //-   option(value="on") ON
+                    //-   option(value="off") OFF
                 tr
                   td Audio
                   td
                     i(class="{{muteStateSymbol(getSelection())}}")
                     | &nbsp; {{getAudioState(getSelection())}}
-                  td
-                    select#audiostateInput.form-control(name="audiostate")
-                      option(value="enable") ENABLED
-                      option(value="disable") DISABLED
-            button.btn.btn-default(type="submit") Set State
+                tr
+                  td Play time
+                  td {{ uptime(getSelection()) }}
+                tr
+                  td Uptime
+                  td {{ machineUptime(getSelection()) }}
+                tr
+                  td Link Quality
+                  td {{ linkQuality(getSelection()) }}
+                tr
+                  td Signal Level
+                  td {{ signalLevel(getSelection()) }}
+                tr
+                  td Noise Level
+                  td {{ noiseLevel(getSelection()) }}
+
+            //- TODO: figure out sane way to switch individual LED.
+            //- button.btn.btn-default(type="submit") Set State
 
 
 
