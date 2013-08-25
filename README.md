@@ -15,8 +15,9 @@ To run this locally, first install the heroku scripts, install mongodb
 locally, and then:
 
 ```bash
-  $ foreman start
+  $ MASTER_PASS=secret foreman start
 ```
+
 
 
 Box Logging
@@ -41,6 +42,9 @@ On the box itself, you need to add to `/etc/crontab` like so:
 */5 * * * *  root  /home/pi/box/checkin.py http://boxmaster.herokuapp.com/box/hello >/home/pi/checkin.log 2>&1
 
 ```
+
+And then make sure to clone the [box repo](https://github.com/artxfm/box) 
+into /home/pi/box.
 
 
 Database Setup
