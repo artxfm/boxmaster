@@ -56,6 +56,13 @@ mongo.init(function(err) {
 
 
 var io = require('socket.io').listen(server);
+// Heroku does not like web sockets
+// see: https://devcenter.heroku.com/articles/using-socket-io-with-node-js-on-heroku
+io.configure(function() {
+  io.set("transports", ["xhr-polling"]);
+  io.set("polling-duration", 10);
+});
+
 
 
 io.sockets.on('connection', function (socket) {

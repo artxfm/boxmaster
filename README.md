@@ -33,3 +33,19 @@ affair. Using mongo shell do something like this:
 
 The `id` is the "secret" id that the box will use when reporting in, and
 the `uid` is the ID value shown in the UI.
+
+On the box itself, you need to add to `/etc/crontab` like so:
+
+```bash
+
+*/5 * * * *  root  /home/pi/box/checkin.py http://boxmaster.herokuapp.com/box/hello >/home/pi/checkin.log 2>&1
+
+```
+
+
+Database Setup
+--------------
+Is a bit manual at the moment.
+
+*  Insert known box IDs as described above.
+*  Make sure you have an index on the `boxen.id` field.
