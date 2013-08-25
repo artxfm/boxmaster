@@ -5,11 +5,19 @@ var express = require("express"),
     userui = require('./src/userui'),
     mongo = require('./src/mongo');
 
+
+
+
 var app = express();
 
 app.engine('jade', require('jade').__express);
 app.set('port', process.env.PORT || 3000);
 app.set('views', __dirname + "/views");
+
+var masterPass = process.env.MASTER_PASS;
+if ((masterPass == null) || (masterPass.length <= 0)) {
+    throw "ENV.masterPass is not set";
+}
 
 app.use(express.logger('dev'));  /* 'default', 'short', 'tiny', 'dev' */
 app.use(express.bodyParser());
@@ -70,21 +78,25 @@ io.sockets.on('connection', function (socket) {
     socket.on('led_ctrl', function(data) {
         // Requires auth!
         // TODO: for now mute is always "no"
-        console.log("XXX led_ctrl: " + data.state);
-        var state = (data.state == "ON") ? "on" : "off";
-        userui.setMasterLed(mongo, state, function(err) {
-            if (err) {
-                // TODO: emit error sig to ui...
-                console.log("setMaster ERROR ", err);
-            } else {
-                // refresh the screen data:
-                userui.getBoxen(mongo, function(boxlist) {
-                    if (!boxlist) {
-                        boxlist = [];
-                    }
-                    socket.emit('status', boxlist);
-                });
-            }
-        });
+        console.log("XXX led_ctrl: " + data.state + ", pass=" + data.pass);
+        if (data.pass == masterPass) {
+            var state = (data.state == "ON") ? "on" : "off";
+            userui.setMasterLed(mongo, state, function(err) {
+                if (err) {
+                    // TODO: emit error sig to ui...
+                    console.log("setMaster ERROR ", err);
+                } else {
+                    // refresh the screen data:
+                    userui.getBoxen(mongo, function(boxlist) {
+                        if (!boxlist) {
+                            boxlist = [];
+                        }
+                        socket.emit('status', boxlist);
+                    });
+                }
+            });
+        } else {
+            console.log("XXX -- bad password --");
+        }
     });
 });

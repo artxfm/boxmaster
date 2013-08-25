@@ -27,6 +27,8 @@ block content
               h4.modal-title Set All LEDs {{desiredState}}
             div.modal-body
               p Are you certain you want to turn {{desiredState}} all LEDs?
+              div
+                input(type="password", size="16", placeholder="passcode", ng-model="masterPass")
             div.modal-footer
               button.btn.btn-default(type="button", data-dismiss="modal") No, abort!
               button.btn.btn-primary(type="button", ng-click="commit()") Yes, make it so!
@@ -94,8 +96,6 @@ block content
                   td Noise Level
                   td {{ noiseLevel(getSelection()) }}
 
-            //- TODO: figure out sane way to switch individual LED.
-            //- button.btn.btn-default(type="submit") Set State
 
 
 

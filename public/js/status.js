@@ -98,6 +98,7 @@ function StatusCtrl($scope, socket) {
 function MasterLedCtrl($scope, socket) {
 
   $scope.desiredState = null;
+  $scope.masterPass = "";
 
   // This is required for bm-modal
   $scope.dialogIsActive = false;
@@ -114,7 +115,7 @@ function MasterLedCtrl($scope, socket) {
 
   $scope.commit = function() {
     console.log("server turn all LEDs " + $scope.desiredState);
-    socket.emit('led_ctrl', { state: $scope.desiredState });
+    socket.emit('led_ctrl', { state: $scope.desiredState, pass: $scope.masterPass });
     $scope.desiredState = null;
     $scope.dialogIsActive = false;
   };
