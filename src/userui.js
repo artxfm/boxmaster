@@ -18,7 +18,10 @@ exports.getBoxen = function(mongo, callback) {
             mongo.control.findOne({param:'master'}, function(err, master) {
                 if (!err) {
 
-                    var masterUpdateTime = master.state.led_ts.getTime();
+                    var masterUpdateTime = 0;
+                    if (master.state.led_ts) {
+                        masterUpdateTime = master.state.led_ts.getTime();
+                    }
 
                     // Note that the database ID values are sensitve since they
                     // are used by the boxes to send in updates, so we never
